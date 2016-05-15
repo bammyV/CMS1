@@ -1,31 +1,33 @@
 <?php
 header('Content-Type: text/html; charset=utf-8');
-$servername = "localhost";
-$sql_username = "root";
-$sql_password = "1";
-$dbname="PhpSite1";
-$conn = new mysqli($servername, $sql_username, $sql_password,$dbname);
-
-if ($conn->connect_errno)
-{
-    die("Connection failed: " .  $conn->connect_error. "(".$conn->connect_errno.")");
-}
+require_once 'functions.php';
 ?>
-<?php if ($_SERVER["REQUEST_METHOD"] == "POST")
+
+
+<?php 
+
+
+$conn=MysqlConnect();
+
+if ($_SERVER["REQUEST_METHOD"] == "POST")
 {
    $Name = $conn->real_escape_string($_POST["name"]);
    $Family= $conn->real_escape_string($_POST["family"]);
    $Tell = $conn->real_escape_string($_POST["tellphone"]);
    $type_name = $_POST["type"];
  
-
  //retrive from DB
  $ProjID=0;
+ //$test=MysqlSelect('1',$conn,'user_type','*','0','0');
+ //var_dump($test);
+ //$CType_Q0=$conn->fetch_array(MysqlSelect ('show',$conn,'*','type_id',0,0));
+ //$CType_Q=$conn->query(MysqlSelect ('2',$conn,'user_type','type_id','type_name',$type_name));
  $CType_Q = $conn->query("SELECT `type_id` FROM `user_type` WHERE `type_name` like '$type_name';"); 
  
   while ($row = $CType_Q->fetch_assoc()) {
        $CType = $row['type_id'];
     }
+   
  echo $ProjID."...".$Name."...".$Family."...".$CType."...".$Tell;            
 $sql1="INSERT INTO customers (project_id, name, family, customer_type, Tel_no) VALUES ('$ProjID','$Name','$Family','$CType','$Tell');";
 
@@ -35,6 +37,7 @@ if ($conn->query($sql1)=== TRUE){
 echo "Error: " . $sql1 . "<br>" . $conn->error;
  die("Error: {$conn->errno} : {$conn->error}");
 }
+
 }
 ?>
 <div style="float:right;">
@@ -47,7 +50,29 @@ echo "Error: " . $sql1 . "<br>" . $conn->error;
     <br><br>
     <input name="tellphone" type="tel">تلفن
     <br><br>
-    <input name="type" type="text">نوع مشتری
+    <input name="type" type="text">
+    نوع مشتری
+    <br><br>
+    <div >
+    <ul style = "direction:rtl">
+    <li>
+    نوع مشتری موجود
+    </li>
+    <li>
+    <?php 
+$conn=MysqlConnect();
+
+$result=$conn->query("SELECT * FROM user_type;");
+while($row=$result->fetch_array())
+{
+echo "\n"."<tr>";
+		echo "<td>". $row['type_name']. "</td>";
+echo "</tr>"."<br />";
+}
+?>
+</li>
+</ul>
+</div>
     <br><br>
   <input type="submit" value="Submit Form">
 </form>
