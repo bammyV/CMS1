@@ -16,19 +16,19 @@ function MysqlConnect ()
 }
 
 function MysqlSelect ($Syn,$connetion,$Table,$ColA,$ColQ,$Value){	
-	echo "$Syn...$Table...$ColA...$ColQ...$Value"."\n";
+	//echo "$Syn...$Table...$ColA...$ColQ...$Value"."\n";
 	switch ($Syn)
 {
 	case "1":
-		$result = $connetion->query("select $ColA from $Table;");
-		echo $connetion->connect_error;
+		$result = $connetion-> query("SELECT $ColA FROM  $Table;");
+		//var_dump ($result);
+		return($result);
 		break;
 	case "2":
-		$result = $connetion->query("select `$ColA` from `$Table` where `$ColQ` like `$Value`;");
+		$result = $connetion->query("SELECT $ColA FROM $Table WHERE $ColQ LIKE '$Value';");
 		//echo "2";
-		break;
 		return($result);
-		echo $connetion->connect_error;
+		break;
 	default:
 		break;
 		return("error");
