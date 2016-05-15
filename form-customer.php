@@ -53,12 +53,10 @@ echo "Error: " . $sql1 . "<br>" . $conn->error;
     <input name="type" type="text">
     نوع مشتری
     <br><br>
-    <div >
-    <ul style = "direction:rtl">
-    <li>
-    نوع مشتری موجود
-    </li>
-    <li>
+    <div style='text-align:right'> 
+    نوع مشتری‌های موجود
+    </div>
+   <div style='text-align:left'> 
     <?php 
 $conn=MysqlConnect();
 
@@ -70,8 +68,7 @@ echo "\n"."<tr>";
 echo "</tr>"."<br />";
 }
 ?>
-</li>
-</ul>
+
 </div>
     <br><br>
   <input type="submit" value="Submit Form">
