@@ -17,8 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
  
  //retrive from DB
  $ProjID=0;
-
- //$CType_Q0=$conn->fetch_array(MysqlSelect ('show',$conn,'*','type_id',0,0));
+ //
  $CType_Q=MysqlSelect ('2',$conn,'user_type','type_id','type_name',$type_name);
  //$CType_Q = $conn->query("SELECT `type_id` FROM `user_type` WHERE `type_name` like '$type_name';"); 
  
