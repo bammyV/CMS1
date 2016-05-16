@@ -11,21 +11,13 @@
 <body>
   <?php
   header('Content-Type: text/html; charset=utf-8');
-  $servername = "localhost";
-  $sql_username = "root";
-  $sql_password = "1";
-  $dbname="PhpSite1";
+  require_once 'functions.php';
+
   $hash_cost=5;
 
   // Create connection
-  $conn = new mysqli($servername, $sql_username, $sql_password,$dbname);
-
-  // Check connection
-  //echo '<pre>',print_r($conn),'</pre>';
-  if ($conn->connect_errno)
-  {
-      die("Connection failed: " .  $conn->connect_error. "(".$conn->connect_errno.")");
-  }
+$conn=MysqlConnect();
+  
   function test_input($data) {
     $data = trim($data);
     $data = stripslashes($data);
@@ -45,7 +37,7 @@ $Address=$conn->real_escape_string($_POST["Address"]);
 //$website=$_POST["website"]);
 $Username = $conn->real_escape_string($_POST["UserName"]);
 //echo $Username;
-$result0 = $conn->query("select * from User where username like '$Username';");
+$result0 = MysqlSelect ('2',$conn,'User','*','username',$Username);
 if ( ($result0 -> num_rows)> 0)
   {
     echo "username ".$Username ." alredy exist";
@@ -56,15 +48,15 @@ $UPassw=$conn->real_escape_string($_POST["PassWord"]);
 $salt = strtr(base64_encode(mcrypt_create_iv(16, MCRYPT_DEV_URANDOM)), '+', '.');
 $Passw =crypt($UPassw, sprintf('$2a$%02d$', $hash_cost).$salt);
 $Idcard=$conn->real_escape_string($_POST["Idcard"]);
-$result0 = $conn->query("select * from User where Idcard_number like '$Idcard';");
-if ( ($result0 -> num_rows)> 0)
+$result1 = MysqlSelect ('2',$conn,'User','*','Idcard_number',$Idcard);
+if ( ($result1 -> num_rows)> 0)
   {
     echo "شماره ملی ".$Idcard ." تکراری است".'<br />';
     die();
   }
 $Shenasname=$conn->real_escape_string($_POST["Shenasname"]);
-$result0 = $conn->query("select * from User where shenasname_no like '$Shenasname';");
-if ( ($result0 -> num_rows)> 0)
+$result2 = MysqlSelect ('2',$conn,'User','*','shenasname_no',$Shenasname);
+if ( ($result2 -> num_rows)> 0)
   {
     echo "شماره شناسنامه ".$Shenasname ." تکراری است".'<br />';
     die();
@@ -127,12 +119,12 @@ unset($_POST);
     <br><br>
     <input name="phone" type="tel">تلفن
     <br><br>
-    <input name="Address" rows="5" cols="40">آدرس
+    <input name="Address" type="text">آدرس
     <br><br>
     <input type="text" name="UserName" value="<?php echo $Username;?>">نام کاربری
     <span class="error"><?php echo $UsernameErr;?></span>
     <br><br>
-    <input name="PassWord" type="psw">پسورد
+    <input name="PassWord" type="password">پسورد
     <br><br>
     <input name="Idcard" type="text">شماره ملی
     <br><br>

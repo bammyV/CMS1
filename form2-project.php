@@ -1,20 +1,10 @@
 <?php
 header('Content-Type: text/html; charset=utf-8');
-$servername = "localhost";
-$sql_username = "root";
-$sql_password = "1";
-$dbname="PhpSite1";
-$hash_cost=5;
+require_once 'functions.php';
 
 // Create connection
-$conn = new mysqli($servername, $sql_username, $sql_password,$dbname);
+$conn=MysqlConnect();
 
-// Check connection
-//echo '<pre>',print_r($conn),'</pre>';
-if ($conn->connect_errno)
-{
-    die("Connection failed: " .  $conn->connect_error. "(".$conn->connect_errno.")");
-}
 ?>
 <?php
 $RegisterNum=$Owner=$Karfarma=$Consultant=$Sabt=$Sohbat=$SahebFile=$ProjectCol=$PishFact=$PreCong=$RegTime= '';
@@ -38,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
    $RegTime= date("Ymd");
    
    
-   $OwnerQ = $conn->query("SELECT `customer_id` FROM `customers` WHERE name like '$Owner_N'  AND family like '$Owner_F';");
+   $OwnerQ =$conn->query("SELECT `customer_id` FROM `customers` WHERE name like '$Owner_N'  AND family like '$Owner_F';");
 //   echo $Owner_N,$Owner_F;
 //   var_dump($OwnerQ);
     while ($row = $OwnerQ->fetch_assoc()) {
